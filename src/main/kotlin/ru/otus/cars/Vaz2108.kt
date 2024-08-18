@@ -72,15 +72,15 @@ class Vaz2108 private constructor(color: String) : VazPlatform(color) {
      * Делегируем приборы внутреннему классу
      */
     override val carOutput: CarOutput = VazOutput()
-    override val tankMouth: TankMouth = carOutput as Tank
+    override val tank: Tank = carOutput as Tank
 
     /**
      * Имеет доступ к внутренним данным ЭТОГО ВАЗ-2108!
      */
     inner class VazOutput : Tank(
         0, // Забирать со своей канистрой бензина
-        "Бензин",
         42, // https://www.bolshoyvopros.ru/questions/3120602-skolko-litrov-benzobak-vaz-2108.html :)
+        TankMouth.TankMouthVaz2108()
     ), CarOutput {
         override fun getCurrentSpeed(): Int {
             return this@Vaz2108.currentSpeed

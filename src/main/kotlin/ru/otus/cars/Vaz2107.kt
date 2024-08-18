@@ -78,15 +78,15 @@ class Vaz2107 private constructor(
      */
     override val carOutput: CarOutput
 
-    override val tankMouth: TankMouth
+    override val tank: Tank
 
     /**
      * Имеет доступ к внутренним данным ЭТОГО ВАЗ-2107!
      */
     inner class VazOutput(litres: Int = 0) : Tank(
         litres,
-        "Газ",
         39, // https://www.bolshoyvopros.ru/questions/3120600-skolko-litrov-benzobak-vaz-2107.html :)
+        tankMouth = TankMouth.TankMouthVaz2107()
     ),
         CarOutput {
         override fun getCurrentSpeed(): Int {
@@ -97,6 +97,6 @@ class Vaz2107 private constructor(
     init {
         val vazOutput = VazOutput(litersFromFactory)
         carOutput = vazOutput
-        tankMouth = vazOutput
+        tank = vazOutput
     }
 }

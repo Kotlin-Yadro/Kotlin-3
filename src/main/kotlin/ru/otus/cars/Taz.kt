@@ -1,5 +1,6 @@
 package ru.otus.cars
 
+import ru.otus.cars.fuel_system.Tank
 import ru.otus.cars.fuel_system.TankMouth
 
 object Taz: Car {
@@ -19,11 +20,11 @@ object Taz: Car {
      */
     override val carOutput: CarOutput
         get() = throw NotImplementedError("Приборов нет")
-    override val tankMouth: TankMouth = object: TankMouth() {
-        override fun open() {
-            throw NotImplementedError("Взрываюсь при попытке заправить")
-        }
-    }
+
+    override val tank: Tank = object: Tank(
+        0,
+        tankMouth = TankMouth.TankMouthTaz(),
+    )
 
     /**
      * Получить оборудование

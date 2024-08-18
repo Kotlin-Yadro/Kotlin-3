@@ -6,9 +6,9 @@ import kotlin.math.min
 
 abstract class Tank(
     private var liters: Int,
-    val fuelType: String,
     private val capacity: Int = Int.MAX_VALUE,
-) : TankMouth(), CarOutput {
+    val tankMouth: TankMouth,
+) : CarOutput {
 
     fun receiveFuel(liters: Int): Int {
         val remains = max(this.liters + liters - capacity, 0)
@@ -18,5 +18,6 @@ abstract class Tank(
 
     override fun getFuelContents() = liters
 
-    override fun toString() = "tank capacity $capacity, The tank has $liters liters of $fuelType"
+    override fun toString() =
+        "tank capacity $capacity, The tank has $liters liters of ${tankMouth.fuelType}"
 }

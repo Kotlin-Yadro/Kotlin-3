@@ -7,7 +7,7 @@ class GasStationImpl : GasStation {
 
     override fun refuelCar(car: Car, litres: Int): Boolean {
         var isOpen = false
-        val tankMouth = car.tankMouth
+        val tankMouth = car.tank.tankMouth
         try {
             tankMouth.open()
             isOpen = true

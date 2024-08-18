@@ -15,7 +15,7 @@ abstract class VazPlatform(override val color: String) : Car {
     // Абстрактное свойство двигателя
     abstract val engine: VazEngine
 
-    override fun toString(): String = "Equipment=${getEquipment()} Tank=$tankMouth"
+    override fun toString(): String = "Equipment=${getEquipment()} Tank=$tank"
 }
 
 // Перечисление двигателей ВАЗ

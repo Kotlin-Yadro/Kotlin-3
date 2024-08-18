@@ -1,6 +1,14 @@
 package ru.otus.cars.fuel_system
 
-abstract class TankMouth() {
+sealed class TankMouth(val fuelType: String) {
+    class TankMouthVaz2107 : TankMouth("Газ")
+    class TankMouthVaz2108 : TankMouth("Бензин")
+    class TankMouthTaz : TankMouth("Спирт") {
+        override fun open() {
+            throw NotImplementedError("Взрываюсь при попытке заправить")
+        }
+    }
+
     private var mouthState: Boolean = false
 
     open fun open() {
