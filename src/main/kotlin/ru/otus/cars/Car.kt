@@ -1,5 +1,7 @@
 package ru.otus.cars
 
+import ru.otus.cars.fuel_system.TankMouth
+
 /**
  * Машина целиком
  */
@@ -18,6 +20,8 @@ interface Car : CarInput {
      * Следит за машиной
      */
     val carOutput: CarOutput
+
+    val tankMouth: TankMouth
 
     /**
      * Получить оборудование

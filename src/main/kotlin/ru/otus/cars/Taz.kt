@@ -1,5 +1,7 @@
 package ru.otus.cars
 
+import ru.otus.cars.fuel_system.TankMouth
+
 object Taz: Car {
     /**
      * Номерной знак
@@ -17,6 +19,11 @@ object Taz: Car {
      */
     override val carOutput: CarOutput
         get() = throw NotImplementedError("Приборов нет")
+    override val tankMouth: TankMouth = object: TankMouth() {
+        override fun open() {
+            throw NotImplementedError("Взрываюсь при попытке заправить")
+        }
+    }
 
     /**
      * Получить оборудование

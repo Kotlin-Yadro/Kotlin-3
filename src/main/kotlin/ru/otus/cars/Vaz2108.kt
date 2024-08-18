@@ -1,5 +1,7 @@
 package ru.otus.cars
 
+import ru.otus.cars.fuel_system.Tank
+import ru.otus.cars.fuel_system.TankMouth
 import kotlin.random.Random
 
 /**
@@ -63,18 +65,23 @@ class Vaz2108 private constructor(color: String) : VazPlatform(color) {
 
     // Выводим состояние машины
     override fun toString(): String {
-        return "Vaz2108(plates=$plates, wheelAngle=$wheelAngle, currentSpeed=$currentSpeed)"
+        return "Vaz2108(plates=$plates, wheelAngle=$wheelAngle, currentSpeed=$currentSpeed) ${super.toString()}"
     }
 
     /**
      * Делегируем приборы внутреннему классу
      */
     override val carOutput: CarOutput = VazOutput()
+    override val tankMouth: TankMouth = carOutput as Tank
 
     /**
      * Имеет доступ к внутренним данным ЭТОГО ВАЗ-2108!
      */
-    inner class VazOutput : CarOutput {
+    inner class VazOutput : Tank(
+        0, // Забирать со своей канистрой бензина
+        "Бензин",
+        42, // https://www.bolshoyvopros.ru/questions/3120602-skolko-litrov-benzobak-vaz-2108.html :)
+    ), CarOutput {
         override fun getCurrentSpeed(): Int {
             return this@Vaz2108.currentSpeed
         }

@@ -1,11 +1,19 @@
 package ru.otus.cars
 
+import ru.otus.cars.fuel_system.Tank
+import ru.otus.cars.fuel_system.TankMouth
 import kotlin.random.Random
+
+// Интересно litersFromFactory будет всегда (пока жив объект Vaz2107) висеть в стеке?
+// Или при выходе из конструктора litersFromFactory потеряется?
 
 /**
  * Семёрочка
  */
-class Vaz2107 private constructor(color: String) : VazPlatform(color) {
+class Vaz2107 private constructor(
+    color: String,
+    litersFromFactory: Int
+) : VazPlatform(color) {
     /**
      * Сам-себе-сборщик ВАЗ 2107.
      */
@@ -17,7 +25,10 @@ class Vaz2107 private constructor(color: String) : VazPlatform(color) {
             }
         }
 
-        override fun build(plates: Car.Plates): Vaz2107 = Vaz2107("Зеленый").apply {
+        override fun build(plates: Car.Plates): Vaz2107 = Vaz2107(
+            "Зеленый",
+            5, // Хватит доехать до ближайшей АЗС
+        ).apply {
             this.engine = getRandomEngine()
             this.plates = plates
         }
@@ -59,20 +70,33 @@ class Vaz2107 private constructor(color: String) : VazPlatform(color) {
 
     // Выводим состояние машины
     override fun toString(): String {
-        return "Vaz2107(plates=$plates, wheelAngle=$wheelAngle, currentSpeed=$currentSpeed)"
+        return "Vaz2107(plates=$plates, wheelAngle=$wheelAngle, currentSpeed=$currentSpeed) ${super.toString()}"
     }
 
     /**
      * Делегируем приборы внутреннему классу
      */
-    override val carOutput: CarOutput = VazOutput()
+    override val carOutput: CarOutput
+
+    override val tankMouth: TankMouth
 
     /**
      * Имеет доступ к внутренним данным ЭТОГО ВАЗ-2107!
      */
-    inner class VazOutput : CarOutput {
+    inner class VazOutput(litres: Int = 0) : Tank(
+        litres,
+        "Газ",
+        39, // https://www.bolshoyvopros.ru/questions/3120600-skolko-litrov-benzobak-vaz-2107.html :)
+    ),
+        CarOutput {
         override fun getCurrentSpeed(): Int {
             return this@Vaz2107.currentSpeed
         }
+    }
+
+    init {
+        val vazOutput = VazOutput(litersFromFactory)
+        carOutput = vazOutput
+        tankMouth = vazOutput
     }
 }
