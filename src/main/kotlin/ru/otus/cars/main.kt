@@ -1,5 +1,8 @@
 package ru.otus.cars
 
+import ru.otus.cars.gas_station.GasStation
+import ru.otus.cars.gas_station.GasStationImpl
+
 fun main() {
     println("\n===> drive cars...")
     driveCars()
@@ -16,6 +19,11 @@ fun main() {
     techChecks()
     println("\n===> Taz...")
     println(Taz.color)
+    // */
+    println("\n===> Refueling of cars")
+    refuelingCars(GasStationImpl())
+    println("\n===> Refueling list of cars")
+    refuelingCarList(GasStationImpl())
 }
 
 fun driveCars() {
@@ -89,5 +97,49 @@ fun repairEngine(car: VazPlatform) {
     when (car.engine) {
         is VazEngine.LADA_2107 -> println("Чистка карбюратора у двигателя объемом ${car.engine.volume} куб.см у машины $car")
         is VazEngine.SAMARA_2108 -> println("Угол зажигания у двигателя объемом ${car.engine.volume} куб.см у машины $car")
+    }
+}
+
+fun refuelingCars(gasStation: GasStation) {
+    val vaz1 = Vaz2107.build(Car.Plates("123", 77))
+    val vaz2 = Vaz2108.build(Car.Plates("321", 78))
+    println("\n===> Refueling of Vaz2107")
+    gasStation.refuelCar(vaz1, 15)
+    println("\n===> Refueling of Vaz2108")
+    gasStation.refuelCar(vaz2, 15)
+    println("\n===> Refueling 100 litres of Vaz2107")
+    gasStation.refuelCar(vaz1, 100)
+    println("\n===> Refueling of Taz")
+    gasStation.refuelCar(Taz, 1)
+}
+
+fun refuelingCarList(gasStation: GasStation) {
+    /*listOf(
+        Vaz2107.build(Car.Plates("123", 77)) to 15,
+        Vaz2108.build(Car.Plates("321", 78)) to 15,
+        Vaz2107.build(Car.Plates("123", 77)) to 115,
+        Taz to 1,
+    ).let {
+        println("\n===> Refueling of Vaz2107, Vaz2108, overflow of Vaz2107, Taz")
+        gasStation.refuelCar(it)
+    }// */
+    val cars = listOf(
+        Vaz2107.build(Car.Plates("123", 77)),
+        Vaz2108.build(Car.Plates("321", 78)),
+        Vaz2107.build(Car.Plates("123", 77)).also { // Предварительно заправим, чтоб увидеть переполнение
+            gasStation.refuelCar(it, 20)
+        },
+        Taz,
+    ).let {
+        println("\n===> Refueling of Vaz2107, Vaz2108, Taz")
+        it.print()
+        gasStation.refuelCar(it, 25)
+        it.print()
+    }
+}
+
+fun List<Car>.print() {
+    forEach {
+        println(it)
     }
 }
