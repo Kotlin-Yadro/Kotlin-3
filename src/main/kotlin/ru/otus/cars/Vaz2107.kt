@@ -20,6 +20,8 @@ class Vaz2107 private constructor(color: String) : VazPlatform(color) {
         override fun build(plates: Car.Plates): Vaz2107 = Vaz2107("Зеленый").apply {
             this.engine = getRandomEngine()
             this.plates = plates
+            this.tank = Vaz2107Tank()
+            this.tankMouth = LpgMouth(tank)
         }
 
         /**
@@ -45,10 +47,22 @@ class Vaz2107 private constructor(color: String) : VazPlatform(color) {
      */
     fun drdrdrdrdr() {
         println("Помчали на $MODEL:")
-        println("Др-др-др-др....")
+        if (tank.getFuelContents() > 0) {
+            println("Др-др-др-др....")
+        } else {
+            println("Др-др-др-др....  нет топлива....")
+        }
     }
 
     private var currentSpeed: Int = 0 // Скока жмёт
+        private set(value) {
+            if (tank.getFuelContents() > 0) {
+                field = value
+            } else {
+                println("нет топлива....")
+                field = 0
+            }
+        }
 
     /**
      * Доступно сборщику
@@ -57,9 +71,20 @@ class Vaz2107 private constructor(color: String) : VazPlatform(color) {
     override lateinit var plates: Car.Plates
         private set
 
+    /**
+     * Горловина бензобака
+     */
+    override lateinit var tankMouth: TankMouth
+        private set
+
+    /**
+     * Бензобак
+     */
+    private lateinit var tank: Tank
+
     // Выводим состояние машины
     override fun toString(): String {
-        return "Vaz2107(plates=$plates, wheelAngle=$wheelAngle, currentSpeed=$currentSpeed)"
+        return "Vaz2107(plates=$plates, wheelAngle=$wheelAngle, currentSpeed=$currentSpeed, fuelContents=${tank.contents})"
     }
 
     /**
@@ -74,5 +99,16 @@ class Vaz2107 private constructor(color: String) : VazPlatform(color) {
         override fun getCurrentSpeed(): Int {
             return this@Vaz2107.currentSpeed
         }
+
+        override fun getFuelContents(): Int {
+            return this@Vaz2107.tank.getFuelContents()
+        }
+    }
+
+    /**
+     * Бак подходящий Vaz2107
+     */
+    private inner class Vaz2107Tank : Tank() {
+        override val capacity = 39;
     }
 }

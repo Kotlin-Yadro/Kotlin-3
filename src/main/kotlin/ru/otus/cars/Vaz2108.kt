@@ -21,6 +21,8 @@ class Vaz2108 private constructor(color: String) : VazPlatform(color) {
         override fun build(plates: Car.Plates): Vaz2108 = Vaz2108("Красный").apply {
             this.engine = getRandomEngine()
             this.plates = plates
+            this.tank = Vaz2108Tank()
+            this.tankMouth = PetrolMouth(tank)
         }
 
         fun alignWheels(vaz2108: Vaz2108) {
@@ -39,11 +41,26 @@ class Vaz2108 private constructor(color: String) : VazPlatform(color) {
         private set
 
     /**
+     * Горловина бензобака
+     */
+    override lateinit var tankMouth: TankMouth
+        private set
+
+    /**
+     * Бензобак
+     */
+    private lateinit var tank: Tank
+
+    /**
      * Восьмерка едет так
      */
     fun zhzhzhzh() {
         println("Помчали на ${MODEL}:")
-        println("Ж-ж-ж-ж....")
+        if (tank.getFuelContents() > 0) {
+            println("Ж-ж-ж-ж....")
+        } else {
+            println("Ж-ж-ж-ж.... нет топлива....")
+        }
     }
 
     // Переопределяем метод родителя
@@ -53,6 +70,14 @@ class Vaz2108 private constructor(color: String) : VazPlatform(color) {
     }
 
     private var currentSpeed: Int = 0 // Скока жмёт
+        private set(value) {
+            if (tank.getFuelContents() > 0) {
+                field = value
+            } else {
+                println("нет топлива....")
+                field = 0
+            }
+        }
 
     /**
      * Доступно сборщику
@@ -63,7 +88,7 @@ class Vaz2108 private constructor(color: String) : VazPlatform(color) {
 
     // Выводим состояние машины
     override fun toString(): String {
-        return "Vaz2108(plates=$plates, wheelAngle=$wheelAngle, currentSpeed=$currentSpeed)"
+        return "Vaz2108(plates=$plates, wheelAngle=$wheelAngle, currentSpeed=$currentSpeed, fuelContents=${tank.contents})"
     }
 
     /**
@@ -78,5 +103,16 @@ class Vaz2108 private constructor(color: String) : VazPlatform(color) {
         override fun getCurrentSpeed(): Int {
             return this@Vaz2108.currentSpeed
         }
+
+        override fun getFuelContents(): Int {
+            return this@Vaz2108.tank.getFuelContents()
+        }
+    }
+
+    /**
+     * Бак подходящий Vaz2108
+     */
+    private inner class Vaz2108Tank : Tank() {
+        override val capacity = 43;
     }
 }

@@ -14,9 +14,11 @@ interface CarFactory {
  * Автозавод в Тольятти (он у нас один такой)
  */
 object Togliatti : CarFactory {
+
     private fun buildVaz2107(plates: Car.Plates): Car {
         println("Запил ${Vaz2107.MODEL} в Тольятти...")
         val vaz = Vaz2107.build(plates)
+        RefuelingStation.refuelCar(vaz, 10)
         println("Проверяем тачку...")
         Vaz2107.test(vaz)
         vaz.drdrdrdrdr()
@@ -28,6 +30,7 @@ object Togliatti : CarFactory {
         val vaz = Vaz2108.build(plates)
         println("Сход-развал...")
         Vaz2108.alignWheels(vaz)
+        RefuelingStation.refuelCar(vaz, 15)
         vaz.zhzhzhzh()
         return vaz
     }
