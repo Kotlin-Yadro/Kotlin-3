@@ -37,5 +37,11 @@ class RefuelingStation {
                 println("Машина $car не заправлена. Произошла ошибка: $e")
             }
         }
+
+        fun refuelCar(cars: List<Car>, liters: Int) {
+            for (car in cars) {
+                RefuelingStation.refuelCar(car, liters)
+            }
+        }
     }
 }

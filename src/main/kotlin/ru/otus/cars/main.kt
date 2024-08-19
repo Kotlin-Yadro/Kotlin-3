@@ -16,6 +16,8 @@ fun main() {
     techChecks()
     println("\n===> Taz...")
     tazCheck()
+    println("\n===> refuel checks...")
+    groupRefuelCheck()
 }
 
 fun driveCars() {
@@ -84,6 +86,29 @@ fun techChecks() {
 fun tazCheck() {
     val taz = Taz()
     RefuelingStation.refuelCar(taz, 3)
+}
+
+fun groupRefuelCheck() {
+    val cars = listOf(
+        Vaz2107.build(Car.Plates("123", 77)),
+        Vaz2108.build(Car.Plates("321", 78))
+    )
+
+    println("We have ${cars.size} cars to be refueled")
+
+    println("Initial fuel state:")
+    cars.forEach {
+        println("\tCar: ${it.plates.number}/${it.plates.region}," +
+                "initial fuel amount: ${it.carOutput.getFuelContents()}")
+    }
+
+    RefuelingStation.refuelCar(cars, 3)
+
+    println("Refuel state:")
+    cars.forEach {
+        println("\tCar: ${it.plates.number}/${it.plates.region}," +
+                "fuel amount after refuel: ${it.carOutput.getFuelContents()}")
+    }
 }
 
 fun repairEngine(car: VazPlatform) {
