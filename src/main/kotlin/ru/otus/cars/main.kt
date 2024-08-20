@@ -1,21 +1,19 @@
 package ru.otus.cars
 
 fun main() {
-    println("\n===> drive cars...")
-    driveCars()
-    println("\n===> inner test...")
-    innerNestedCheck()
-    println("\n===> garage make...")
-    garageMake()
-    println("\n===> model special...")
-    println("\n===> get equipment...")
-    getEquipment()
-    println("\n===> get color...")
-    getColor()
-    println("\n===> tech checks...")
-    techChecks()
-    println("\n===> Taz...")
-    println(Taz.color)
+    val cars = listOf(
+        Vaz2107.build(Car.Plates("123", 77)),
+        Vaz2108.build(Car.Plates("321", 78)),
+        Taz
+    )
+    for (car in cars) {
+        println("\nBefore refuel ==========")
+        println(car.toString())
+        println("Start refuel ==========")
+        BangFuelStation.refuel(car)
+        println("After refuel ==========")
+        println(car.toString())
+    }
 }
 
 fun driveCars() {
