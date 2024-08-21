@@ -15,13 +15,14 @@ fun main() {
     println("\n===> tech checks...")
     techChecks()
     println("\n===> Taz...")
-    println(Taz.color)
+    tazCheck()
+    println("\n===> refuel checks...")
+    groupRefuelCheck()
 }
 
 fun driveCars() {
     val vaz1 = Togliatti.buildCar(Vaz2107, Car.Plates("123", 77))
     val vaz2 = Togliatti.buildCar(Vaz2108, Car.Plates("321", 78))
-
     println("Экземпляры класса имеют разное внутреннее состояние:")
     vaz1.wheelToRight(10)
     println(vaz1.toString()) // Выводит 10 и случайную скорость
@@ -32,7 +33,7 @@ fun driveCars() {
 fun innerNestedCheck() {
     val vaz = Vaz2107.build(Car.Plates("123", 77))
     val output = vaz.VazOutput() // Создаем новый объект ИЗ ЭКЗЕМПЛЯРА МАШИНЫ
-
+    RefuelingStation.refuelCar(vaz, 5)
     println("Скорость до проверки: ${output.getCurrentSpeed()}") // Выводит 0
     Vaz2107.test(vaz) // Газуем...
     println("Скорость после проверки: ${output.getCurrentSpeed()}") // Выводит случайную скорость
@@ -80,6 +81,34 @@ fun techChecks() {
 
     repairEngine(vaz1)
     repairEngine(vaz2)
+}
+
+fun tazCheck() {
+    val taz = Taz()
+    RefuelingStation.refuelCar(taz, 3)
+}
+
+fun groupRefuelCheck() {
+    val cars = listOf(
+        Vaz2107.build(Car.Plates("123", 77)),
+        Vaz2108.build(Car.Plates("321", 78))
+    )
+
+    println("We have ${cars.size} cars to be refueled")
+
+    println("Initial fuel state:")
+    cars.forEach {
+        println("\tCar: ${it.plates.number}/${it.plates.region}," +
+                "initial fuel amount: ${it.carOutput.getFuelContents()}")
+    }
+
+    RefuelingStation.refuelCar(cars, 3)
+
+    println("Refuel state:")
+    cars.forEach {
+        println("\tCar: ${it.plates.number}/${it.plates.region}," +
+                "fuel amount after refuel: ${it.carOutput.getFuelContents()}")
+    }
 }
 
 fun repairEngine(car: VazPlatform) {
