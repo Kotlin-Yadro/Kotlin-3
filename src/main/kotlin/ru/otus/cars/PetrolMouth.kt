@@ -1,19 +1,19 @@
 package ru.otus.cars
 
-class PetrolMouth(val tank: Tank) : TankMouth {
+class PetrolMouth(private val tank: Tank) : TankMouth {
     private var isOpened: Boolean = false
 
-    override fun open(): Unit {
+    override fun open() {
         println("Люк безина открыт")
         isOpened = true
     }
 
-    override fun close(): Unit {
+    override fun close() {
         println("Люк безина закрыт")
         isOpened = false
     }
 
-    fun fuelPetrol(liters: Int) : Unit {
+    fun fuelPetrol(liters: Int) {
         if (!isOpened) {
             throw Throwable("TankMouth closed")
         }

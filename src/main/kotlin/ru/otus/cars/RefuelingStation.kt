@@ -29,9 +29,6 @@ class RefuelingStation {
                         mouth.close()
                         println("Машина $car заправлена бензином на $liters литров.")
                     }
-                    else -> {
-                        println("Машина $car не заправлена. Неизветсное топливо.")
-                    }
                 }
             } catch (e: Throwable) {
                 println("Машина $car не заправлена. Произошла ошибка: $e")
@@ -40,7 +37,7 @@ class RefuelingStation {
 
         fun refuelCar(cars: List<Car>, liters: Int) {
             for (car in cars) {
-                RefuelingStation.refuelCar(car, liters)
+                refuelCar(car, liters)
             }
         }
     }
