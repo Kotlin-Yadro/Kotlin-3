@@ -18,6 +18,7 @@ interface Car : CarInput {
      * Следит за машиной
      */
     val carOutput: CarOutput
+    var tankMouth: TankMouth
 
     /**
      * Получить оборудование
