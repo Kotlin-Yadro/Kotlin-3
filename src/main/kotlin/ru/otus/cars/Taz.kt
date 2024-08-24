@@ -18,10 +18,17 @@ object Taz: Car {
     override val carOutput: CarOutput
         get() = throw NotImplementedError("Приборов нет")
 
+    override var tankMouth: TankMouth = TankMouth.TazMouth()
+
     /**
      * Получить оборудование
      */
     override fun getEquipment(): String = "Крыса"
+
+    // Выводим состояние машины
+    override fun toString(): String {
+        return "Это что за чудо Таз"
+    }
 
     /**
      * Руль вправо на [degrees] градусов

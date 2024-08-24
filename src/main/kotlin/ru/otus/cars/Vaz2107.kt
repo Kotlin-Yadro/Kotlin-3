@@ -20,6 +20,7 @@ class Vaz2107 private constructor(color: String) : VazPlatform(color) {
         override fun build(plates: Car.Plates): Vaz2107 = Vaz2107("Зеленый").apply {
             this.engine = getRandomEngine()
             this.plates = plates
+            this.tankMouth = TankMouth.GasMouth()
         }
 
         /**
@@ -59,7 +60,7 @@ class Vaz2107 private constructor(color: String) : VazPlatform(color) {
 
     // Выводим состояние машины
     override fun toString(): String {
-        return "Vaz2107(plates=$plates, wheelAngle=$wheelAngle, currentSpeed=$currentSpeed)"
+        return "Vaz2107(plates=$plates, wheelAngle=$wheelAngle, currentSpeed=$currentSpeed, currentFuelLevel=${carOutput.getFuelContents()})"
     }
 
     /**
@@ -67,12 +68,19 @@ class Vaz2107 private constructor(color: String) : VazPlatform(color) {
      */
     override val carOutput: CarOutput = VazOutput()
 
+    override lateinit var tankMouth: TankMouth
+
     /**
      * Имеет доступ к внутренним данным ЭТОГО ВАЗ-2107!
      */
     inner class VazOutput : CarOutput {
         override fun getCurrentSpeed(): Int {
             return this@Vaz2107.currentSpeed
+        }
+
+        override fun getFuelContents(): Int {
+            this@Vaz2107.tankMouth
+            return this@Vaz2107.tankMouth.getContents()
         }
     }
 }
