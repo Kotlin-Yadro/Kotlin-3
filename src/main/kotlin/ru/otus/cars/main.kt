@@ -1,21 +1,28 @@
 package ru.otus.cars
 
 fun main() {
-    println("\n===> drive cars...")
-    driveCars()
-    println("\n===> inner test...")
-    innerNestedCheck()
-    println("\n===> garage make...")
-    garageMake()
-    println("\n===> model special...")
-    println("\n===> get equipment...")
-    getEquipment()
-    println("\n===> get color...")
-    getColor()
-    println("\n===> tech checks...")
-    techChecks()
-    println("\n===> Taz...")
-    println(Taz.color)
+//    println("\n===> drive cars...")
+//    driveCars()
+//    println("\n===> inner test...")
+//    innerNestedCheck()
+//    println("\n===> garage make...")
+//    garageMake()
+//    println("\n===> model special...")
+//    println("\n===> get equipment...")
+//    getEquipment()
+//    println("\n===> get color...")
+//    getColor()
+//    println("\n===> tech checks...")
+//    techChecks()
+//    println("\n===> Taz...")
+//    println(Taz.color)
+    val cars = listOf(
+        Vaz2107.build(Car.Plates("123", 77)),
+        Vaz2108.build(Car.Plates("123", 77)),
+        Taz
+    )
+    println("\n===> Fuel station...")
+    println(fuelStation(cars))
 }
 
 fun driveCars() {
@@ -36,6 +43,20 @@ fun innerNestedCheck() {
     println("Скорость до проверки: ${output.getCurrentSpeed()}") // Выводит 0
     Vaz2107.test(vaz) // Газуем...
     println("Скорость после проверки: ${output.getCurrentSpeed()}") // Выводит случайную скорость
+}
+
+fun fuelStation(cars : List<Car>) {
+    for (car in cars) {
+        println("Состояние до заправки: $car")
+        try {
+            car.refuel()
+        } catch (e: NotImplementedError) {
+            println("Что-то пошло не так: $e")
+        }
+
+        println("Состояние после заправки: $car")
+        println()
+    }
 }
 
 fun garageMake() {

@@ -6,6 +6,9 @@ import kotlin.random.Random
  * Восьмерка
  */
 class Vaz2108 private constructor(color: String) : VazPlatform(color) {
+    override lateinit var tankMouth: TankMouth
+    private var currentFuel: Int = 0
+
     /**
      * Сам-себе-сборщик ВАЗ 2108.
      */
@@ -21,6 +24,7 @@ class Vaz2108 private constructor(color: String) : VazPlatform(color) {
         override fun build(plates: Car.Plates): Vaz2108 = Vaz2108("Красный").apply {
             this.engine = getRandomEngine()
             this.plates = plates
+            this.tankMouth = PetrolMouth(VazTank())
         }
 
         fun alignWheels(vaz2108: Vaz2108) {
@@ -63,7 +67,11 @@ class Vaz2108 private constructor(color: String) : VazPlatform(color) {
 
     // Выводим состояние машины
     override fun toString(): String {
-        return "Vaz2108(plates=$plates, wheelAngle=$wheelAngle, currentSpeed=$currentSpeed)"
+        return "Vaz2108(" +
+                "plates=$plates, " +
+                "wheelAngle=$wheelAngle, " +
+                "currentSpeed=$currentSpeed, " +
+                "currentFuelContents=$currentFuel))"
     }
 
     /**
@@ -71,12 +79,35 @@ class Vaz2108 private constructor(color: String) : VazPlatform(color) {
      */
     override val carOutput: CarOutput = VazOutput()
 
+    override fun refuel() {
+        println("Зправляем $MODEL бензином...")
+        when(tankMouth) {
+            is LpgMouth -> (tankMouth as LpgMouth).fuelLpg(Random.nextInt(0, 60))
+            is PetrolMouth -> (tankMouth as PetrolMouth).fuelPetrol(Random.nextInt(0, 60))
+        }
+    }
+
     /**
      * Имеет доступ к внутренним данным ЭТОГО ВАЗ-2108!
      */
     inner class VazOutput : CarOutput {
         override fun getCurrentSpeed(): Int {
             return this@Vaz2108.currentSpeed
+        }
+
+        override fun getFuelContents(): Int {
+            return this@Vaz2108.currentFuel
+        }
+
+    }
+
+    inner class VazTank : Tank {
+        override fun getContents(): Int {
+            return this@Vaz2108.currentFuel
+        }
+
+        override fun receiveFuel(liters: Int) {
+            currentFuel = liters
         }
     }
 }
