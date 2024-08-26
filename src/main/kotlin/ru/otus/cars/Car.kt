@@ -3,7 +3,7 @@ package ru.otus.cars
 /**
  * Машина целиком
  */
-interface Car : CarInput {
+sealed interface Car : CarInput {
     /**
      * Номерной знак
      */
@@ -19,6 +19,8 @@ interface Car : CarInput {
      */
     val carOutput: CarOutput
 
+    val tankMouth: TankMouth
+
     /**
      * Получить оборудование
      */
@@ -28,4 +30,5 @@ interface Car : CarInput {
      * Внутренний статический класс - номерой знак
      */
     data class Plates(val number: String, val region: Int)
+
 }

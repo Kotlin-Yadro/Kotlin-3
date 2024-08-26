@@ -7,6 +7,10 @@ object Taz: Car {
     override val plates: Car.Plates
         get() = throw NotImplementedError("Номера сняты")
 
+    override val tankMouth: TankMouth = object : LpgMouth(0) {
+            // ничего делать не надо, объем 0 - взрыв произойдет всегда
+        }
+
     /**
      * Цвет машины
      */
