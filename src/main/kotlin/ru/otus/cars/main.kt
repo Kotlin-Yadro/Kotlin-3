@@ -16,6 +16,66 @@ fun main() {
     techChecks()
     println("\n===> Taz...")
     println(Taz.color)
+    println("\n===> Emelyanov Vitaliy homework")
+    totalTest()
+}
+
+fun totalTest() {
+    val vaz2108 = Togliatti.buildCar(Vaz2108, Car.Plates("111", 11)) as Vaz2108
+    val vaz2107 = Togliatti.buildCar(Vaz2107, Car.Plates("112", 12)) as Vaz2107
+    val cars = listOf(
+        vaz2108,
+        vaz2107,
+        Taz
+    )
+    val lpgStation = LpgStation()
+    val petrolStation = PetrolStation()
+    val stations = listOf(lpgStation, petrolStation)
+    val driverCanOnlyDriveVaz2107 = UnexperenciedDriver<Vaz2107>(
+        {
+            println("Неопытный водитель ведет семерку")
+            it.drdrdrdrdr()
+        },
+        {
+            println("Неопытный водитель заправляет семерку, заправку выбирает наугад")
+            stations.random().fillTheTankOf(it)
+        }
+    )
+    val driverCanOnlyDriveVaz2108 = UnexperenciedDriver<Vaz2108>(
+        {
+            println("Неопытный водитель ведет восьмерку")
+            it.zhzhzhzh()
+        },
+        {
+            println("Неопытный водитель заправляет восьмерку, заправку выбирает наугад")
+            stations.random().fillTheTankOf(it)
+        }
+    )
+    val driverCanOnlyDriveTaz = UnexperenciedDriver<Taz>(
+        {
+            println("Я катаюсь на тазике с крысой, уууу") // это прям очень неопытный водитель
+        },
+        {
+            stations.random().fillTheTankOf(it)
+        }
+    )
+    // опытный водитель знает, где можно заправиться
+    val experenciedDriver = ExperenciedDriver(lpgStation, petrolStation)
+    driverCanOnlyDriveVaz2107.drive(vaz2107)
+    println()
+    driverCanOnlyDriveVaz2108.drive(vaz2108)
+    println()
+    driverCanOnlyDriveTaz.drive(Taz)
+    println()
+    for (car in cars) {
+        experenciedDriver.drive(car)
+        println()
+    }
+    // в конце дня менеджер заправляет все машины разом (на всех заправках)
+    for (station in stations) {
+        station.fillTheTankOf(cars)
+        println()
+    }
 }
 
 fun driveCars() {
