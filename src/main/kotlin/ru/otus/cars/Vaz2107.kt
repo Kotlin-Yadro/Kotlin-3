@@ -20,6 +20,9 @@ class Vaz2107 private constructor(color: String) : VazPlatform(color) {
         override fun build(plates: Car.Plates): Vaz2107 = Vaz2107("Зеленый").apply {
             this.engine = getRandomEngine()
             this.plates = plates
+            // Устанавливаем топливную систему
+            this.carTank = VazTank()
+            this.tankMouth = Vaz2107TankMouth()
         }
 
         /**
@@ -59,7 +62,8 @@ class Vaz2107 private constructor(color: String) : VazPlatform(color) {
 
     // Выводим состояние машины
     override fun toString(): String {
-        return "Vaz2107(plates=$plates, wheelAngle=$wheelAngle, currentSpeed=$currentSpeed)"
+        return "Vaz2107(plates=$plates, wheelAngle=$wheelAngle," +
+                "currentSpeed=$currentSpeed, fuel=${carTank.getContents()})"
     }
 
     /**
@@ -73,6 +77,48 @@ class Vaz2107 private constructor(color: String) : VazPlatform(color) {
     inner class VazOutput : CarOutput {
         override fun getCurrentSpeed(): Int {
             return this@Vaz2107.currentSpeed
+        }
+
+        override fun getFuelContents(): Int {
+            return this@Vaz2107.carTank.getContents()
+        }
+    }
+
+    /**
+     * Бензобак, устанавливается сборщиком
+     * @see [build]
+     */
+    private lateinit var carTank: Tank
+
+    /**
+     * Горловина бензобака, устанавливается сборщиком
+     * @see [build]
+     */
+    override lateinit var tankMouth: TankMouth
+        private set
+
+    /**
+     * Топливный бак ВАЗ-2107
+     */
+    inner class VazTank : Tank {
+        private var contents: Int = 0
+
+        override fun getContents(): Int = contents
+
+        override fun receiveFuel(liters: Int) {
+            contents = liters
+        }
+    }
+
+    /**
+     * Горловина бака ВАЗ-2107 (семёрка ездит на газу)
+     */
+    inner class Vaz2107TankMouth : LgpMouth() {
+        override fun fuelLgp(liters: Int) {
+            open()
+            super.fuelLgp(liters)
+            this@Vaz2107.carTank.receiveFuel(liters)
+            close()
         }
     }
 }
