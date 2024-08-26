@@ -1,5 +1,7 @@
 package ru.otus.cars
 
+import kotlin.random.Random
+
 fun main() {
     println("\n===> drive cars...")
     driveCars()
@@ -16,6 +18,8 @@ fun main() {
     techChecks()
     println("\n===> Taz...")
     println(Taz.color)
+    println("\n===> Заправка...")
+    gasStation()
 }
 
 fun driveCars() {
@@ -89,5 +93,29 @@ fun repairEngine(car: VazPlatform) {
     when (car.engine) {
         is VazEngine.LADA_2107 -> println("Чистка карбюратора у двигателя объемом ${car.engine.volume} куб.см у машины $car")
         is VazEngine.SAMARA_2108 -> println("Угол зажигания у двигателя объемом ${car.engine.volume} куб.см у машины $car")
+    }
+}
+
+fun gasStation() {
+    val cars = listOf(
+        Vaz2107.build(Car.Plates("123", 77)),
+        Vaz2108.build(Car.Plates("321", 78)),
+        Taz
+    )
+
+    // Заправляем машины
+    cars.forEach { car ->
+        try {
+            println("Содержимое бака до заправки " +
+                    "${if (car is Taz) "N/A" else car.carOutput.getFuelContents()} литров у машины " +
+                    "${if (car is Taz) "Taz" else car}")
+            when (car.tankMouth) {
+                is PetrolMouth -> (car.tankMouth as PetrolMouth).fuelPetrol(Random.nextInt(5, 40))
+                is LgpMouth -> (car.tankMouth as LgpMouth).fuelLgp(Random.nextInt(5, 40))
+            }
+            println("Содержимое бака после заправки ${car.carOutput.getFuelContents()} литров у машины $car")
+        } catch (e: NotImplementedError) {
+            println("Ошибка во время заправки: $e")
+        }
     }
 }
