@@ -20,12 +20,22 @@ class Vaz2107 private constructor(color: String) : VazPlatform(color) {
         override fun build(plates: Car.Plates): Vaz2107 = Vaz2107("Зеленый").apply {
             this.engine = getRandomEngine()
             this.plates = plates
+            this.vazTank = VazTank()
+            this.tankMouthImpl = LpgMouth()
+            tankMouthImpl?.connect(tank)
         }
 
         /**
          * Проверь, ездит или нет
          */
         fun test(vaz2107: Vaz2107) {
+            val car: Car = vaz2107
+            car.tankMouth
+                ?.receiveFuel(10)
+                ?: run {
+                    println("запрвлять не куда")
+                }
+            println("car.carOutput.fuelLevel:${car.carOutput.fuelLevel}")
             println("Проверяем, едет ли ВАЗ 2107...")
             vaz2107.currentSpeed = Random.nextInt(0, 60)
         }
@@ -46,6 +56,7 @@ class Vaz2107 private constructor(color: String) : VazPlatform(color) {
     fun drdrdrdrdr() {
         println("Помчали на $MODEL:")
         println("Др-др-др-др....")
+        consumeFuel()
     }
 
     private var currentSpeed: Int = 0 // Скока жмёт
@@ -74,5 +85,10 @@ class Vaz2107 private constructor(color: String) : VazPlatform(color) {
         override fun getCurrentSpeed(): Int {
             return this@Vaz2107.currentSpeed
         }
+
+        override val fuelLevel: Int
+            get() {
+                return tank.getLevel()
+            }
     }
 }
