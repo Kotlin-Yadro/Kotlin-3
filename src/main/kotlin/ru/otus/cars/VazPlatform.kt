@@ -14,6 +14,20 @@ abstract class VazPlatform(override val color: String) : Car {
 
     // Абстрактное свойство двигателя
     abstract val engine: VazEngine
+
+    var tankMouthImpl: TankMouth? = null
+
+    override var tankMouth: TankMouth?
+        get() = tankMouthImpl
+        set(value) {}
+
+    protected var vazTank = VazTank()
+    open val tank: Tank
+        get() = vazTank
+
+    fun consumeFuel() {
+        tank.consume(5)
+    }
 }
 
 // Перечисление двигателей ВАЗ

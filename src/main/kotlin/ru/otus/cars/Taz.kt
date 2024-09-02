@@ -22,6 +22,16 @@ object Taz: Car {
      * Получить оборудование
      */
     override fun getEquipment(): String = "Крыса"
+    private var tankMouthImpl: TankMouth? = null
+
+    override var tankMouth: TankMouth?
+        get() = tankMouthImpl
+        set(value) {
+            tankMouthImpl = value
+            tankMouthImpl?.connect(tazTank)
+        }
+
+    private val tazTank = TazTank()
 
     /**
      * Руль вправо на [degrees] градусов
@@ -36,4 +46,5 @@ object Taz: Car {
     override fun wheelToLeft(degrees: Int) {
         throw NotImplementedError("Руля нет")
     }
+
 }

@@ -16,6 +16,11 @@ fun main() {
     techChecks()
     println("\n===> Taz...")
     println(Taz.color)
+
+    println("воткнули горловину в бак Taz'а")
+    Taz.tankMouth = PetrolMouth()
+    println("заправляем Taz")
+    Taz.tankMouth?.receiveFuel(10)
 }
 
 fun driveCars() {
