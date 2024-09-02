@@ -20,7 +20,7 @@ class GasStation {
                         mouth.close()
                         println("$car loaded by $liters l.")
                     }
-                    is NaturalGasMount -> {
+                    is LpgMount -> {
                         println("Loading $car to $liters l.")
                         mouth.open()
                         mouth.loadNaturalGas(liters)

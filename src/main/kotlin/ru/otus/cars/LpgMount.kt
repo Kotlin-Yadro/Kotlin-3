@@ -1,10 +1,7 @@
 package ru.otus.cars
 
-import ru.otus.cars.FuelTank
-import ru.otus.cars.TankMouth
 
-
-class NaturalGasMount(private val tank: FuelTank) : TankMouth {
+class LpgMount(private val tank: FuelTank) : TankMouth {
     private var isOpened: Boolean = false
 
     override fun open() {

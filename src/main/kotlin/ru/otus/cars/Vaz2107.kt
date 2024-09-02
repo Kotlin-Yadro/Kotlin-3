@@ -21,7 +21,7 @@ class Vaz2107 private constructor(color: String) : VazPlatform(color) {
             this.engine = getRandomEngine()
             this.plates = plates
             this.tank = Vaz2107Tank()
-            this.tankMouth = NaturalGasMount(tank)
+            this.tankMouth = LpgMount(tank)
         }
 
         /**
