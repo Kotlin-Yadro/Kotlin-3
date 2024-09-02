@@ -21,6 +21,8 @@ class Vaz2108 private constructor(color: String) : VazPlatform(color) {
         override fun build(plates: Car.Plates): Vaz2108 = Vaz2108("Красный").apply {
             this.engine = getRandomEngine()
             this.plates = plates
+            this.tank = Vaz2108Tank()
+            this.tankMouth = PetrolMouth(tank)
         }
 
         fun alignWheels(vaz2108: Vaz2108) {
@@ -43,7 +45,11 @@ class Vaz2108 private constructor(color: String) : VazPlatform(color) {
      */
     fun zhzhzhzh() {
         println("Помчали на ${MODEL}:")
-        println("Ж-ж-ж-ж....")
+        if (tank.getCurrentAmount() > 0) {
+            println("Ж-ж-ж-ж....")
+        } else {
+            println("не жижижи")
+        }
     }
 
     // Переопределяем метод родителя
@@ -53,7 +59,14 @@ class Vaz2108 private constructor(color: String) : VazPlatform(color) {
     }
 
     private var currentSpeed: Int = 0 // Скока жмёт
-
+        private set(value) {
+            if (tank.getCurrentAmount() > 0) {
+                field = value
+            } else {
+                println("не едет")
+                field = 0
+            }
+        }
     /**
      * Доступно сборщику
      * @see [build]
@@ -61,9 +74,14 @@ class Vaz2108 private constructor(color: String) : VazPlatform(color) {
     override lateinit var plates: Car.Plates
         private set
 
+    override lateinit var tankMouth: TankMouth
+        private set
+
+    private lateinit var tank: FuelTank
+
     // Выводим состояние машины
     override fun toString(): String {
-        return "Vaz2108(plates=$plates, wheelAngle=$wheelAngle, currentSpeed=$currentSpeed)"
+        return "Vaz2108(plates=$plates, , fuelContents=${tank.fulfilnessLiters}  wheelAngle=$wheelAngle, currentSpeed=$currentSpeed)"
     }
 
     /**
@@ -78,5 +96,11 @@ class Vaz2108 private constructor(color: String) : VazPlatform(color) {
         override fun getCurrentSpeed(): Int {
             return this@Vaz2108.currentSpeed
         }
+        override fun getFuelLevel(): Int {
+            return this@Vaz2108.tank.getCurrentAmount()
+        }
+    }
+    private inner class Vaz2108Tank : FuelTank() {
+        override val capacity = 43;
     }
 }
