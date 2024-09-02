@@ -4,8 +4,17 @@ object Taz: Car {
     /**
      * Номерной знак
      */
-    override val plates: Car.Plates
-        get() = throw NotImplementedError("Номера сняты")
+    override lateinit var plates: Car.Plates
+
+    /**
+     * Gas tank
+     */
+    private val tank: FuelTank = TazTank()
+
+    /**
+     * Горловина бензобака
+     */
+    override var tankMouth: TankMouth = PetrolMouth(tank)
 
     /**
      * Цвет машины
@@ -35,5 +44,18 @@ object Taz: Car {
      */
     override fun wheelToLeft(degrees: Int) {
         throw NotImplementedError("Руля нет")
+    }
+
+    override fun toString(): String {
+        return "Taz: " + this.tankMouth
+    }
+
+    /**
+     * ТАЗ может иметь любую систему, но его бак взрывается
+     */
+    private class TazTank :FuelTank() {
+        override fun loadFuel(liters: Int): Unit {
+            throw Throwable("Бак взорвался")
+        }
     }
 }
