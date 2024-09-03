@@ -14,6 +14,8 @@ fun main() {
     getColor()
     println("\n===> tech checks...")
     techChecks()
+    println("\n===> refuel...")
+    refuel()
     println("\n===> Taz...")
     println(Taz.color)
 }
@@ -62,6 +64,34 @@ fun getEquipment() {
         println("Оборудование: ${car.getEquipment()}")
     }
 }
+
+fun refueler(car: Car) = try {
+    when (car.tankMouth) {
+        is Vaz2107.LpgMouth -> (car.tankMouth as Vaz2107.LpgMouth).fuelLpg(20)
+        is Vaz2108.PetrolMouth -> (car.tankMouth as Vaz2108.PetrolMouth).fuelPetrol(30)
+        else -> throw NotImplementedError("неизвестная горловина")
+    }
+}
+catch (e: NotImplementedError) {
+    println("Исключение на заправке: ${e.message}")
+}
+
+
+fun refuel() {
+    val cars = listOf(
+        Vaz2107.build(Car.Plates("123", 77)),
+        Vaz2108.build(Car.Plates("321", 78)),
+        Taz
+    )
+    cars.forEach { car ->
+        refueler(car)
+    }
+    println("После заправки:")
+    cars.forEach { car ->
+        println(" ${car.toString()}")
+    }
+}
+
 
 fun getColor() {
     val cars = listOf(

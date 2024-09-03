@@ -7,6 +7,10 @@ object Taz: Car {
     override val plates: Car.Plates
         get() = throw NotImplementedError("Номера сняты")
 
+    override var tankMouth: TankMouth
+        get() = throw NotImplementedError("Горловины нет")
+        set(value) = throw NotImplementedError("Горловины нет")
+
     /**
      * Цвет машины
      */
