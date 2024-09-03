@@ -54,6 +54,8 @@ class Vaz2108 private constructor(color: String) : VazPlatform(color) {
 
     private var currentSpeed: Int = 0 // Скока жмёт
 
+    private var petrolMouth: PetrolMouth = PetrolMouth()
+
     /**
      * Доступно сборщику
      * @see [build]
@@ -61,9 +63,23 @@ class Vaz2108 private constructor(color: String) : VazPlatform(color) {
     override lateinit var plates: Car.Plates
         private set
 
+    override var tankMouth: TankMouth = petrolMouth
+        private set
+
     // Выводим состояние машины
     override fun toString(): String {
-        return "Vaz2108(plates=$plates, wheelAngle=$wheelAngle, currentSpeed=$currentSpeed)"
+        return "Vaz2108(plates=$plates, wheelAngle=$wheelAngle, currentSpeed=$currentSpeed, fuelContents=${carOutput.getFuelContents()})"
+    }
+
+    inner class VazTank : Tank {
+        override val mouth: TankMouth = this@Vaz2108.tankMouth
+        private var contents: Int = 0;
+        override fun getContents(): Int {
+            return  this.contents;
+        }
+        override fun receiveFuel(liters: Int) {
+            this.contents += liters;
+        }
     }
 
     /**
@@ -75,8 +91,26 @@ class Vaz2108 private constructor(color: String) : VazPlatform(color) {
      * Имеет доступ к внутренним данным ЭТОГО ВАЗ-2108!
      */
     inner class VazOutput : CarOutput {
+        override val tank: Tank = VazTank()
         override fun getCurrentSpeed(): Int {
             return this@Vaz2108.currentSpeed
+        }
+        override fun getFuelContents(): Int {
+            return this.tank.getContents()
+        }
+    }
+
+    inner class PetrolMouth : TankMouth {
+        override fun open() {
+            TODO("Not yet implemented")
+        }
+
+        override fun close() {
+            TODO("Not yet implemented")
+        }
+
+        fun fuelPetrol(liters: Int) {
+            this@Vaz2108.carOutput.tank.receiveFuel(liters)
         }
     }
 }
