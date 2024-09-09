@@ -36,4 +36,10 @@ object Taz: Car {
     override fun wheelToLeft(degrees: Int) {
         throw NotImplementedError("Руля нет")
     }
+
+    override val tankMouth: TankMouth = TankMouth.TankMouthTaz()
+
+    override fun toString(): String {
+        return "Taz is here"
+    }
 }

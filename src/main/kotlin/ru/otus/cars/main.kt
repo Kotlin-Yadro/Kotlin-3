@@ -16,6 +16,10 @@ fun main() {
     techChecks()
     println("\n===> Taz...")
     println(Taz.color)
+    println("\n===> Fueling cars...")
+    fillCars(FuelStationImpl())
+    println("\n===> Fueling list of cars...")
+    fillListOfCars(FuelStationImpl())
 }
 
 fun driveCars() {
@@ -89,5 +93,41 @@ fun repairEngine(car: VazPlatform) {
     when (car.engine) {
         is VazEngine.LADA_2107 -> println("Чистка карбюратора у двигателя объемом ${car.engine.volume} куб.см у машины $car")
         is VazEngine.SAMARA_2108 -> println("Угол зажигания у двигателя объемом ${car.engine.volume} куб.см у машины $car")
+    }
+}
+
+fun fillCars(fuelStation: FuelStation) {
+    val vaz2107 = Vaz2107.build(Car.Plates("123", 77))
+    val vaz2108 = Vaz2108.build(Car.Plates("456", 78))
+    println("\n===> Refueling of Vaz2107")
+    fuelStation.refuelCar(vaz2107, 10)
+    println("\n===> Vaz2107 after refuel: $vaz2107")
+    println("\n===> Refueling of Vaz2108")
+    fuelStation.refuelCar(vaz2108, 10)
+    println("\n===> Vaz2108 after refuel: $vaz2108")
+    println("\n===> Refueling of Taz")
+    fuelStation.refuelCar(Taz, 10)
+}
+
+fun fillListOfCars(fuelStation: FuelStation) {
+    val cars = listOf(
+        Vaz2107.build(Car.Plates("123", 77)),
+        Vaz2108.build(Car.Plates("456", 78)),
+        Taz,
+        Vaz2107.build(Car.Plates("666", 66)),
+        Vaz2108.build(Car.Plates("777", 99)),
+        Taz,
+    )
+
+    println("\n===> Adding 5 liters to each car")
+    fuelStation.refuelCar(cars, 5)
+    cars.forEach {
+        println(it)
+    }
+
+    println("\n===> Adding another 10 liters to each car")
+    fuelStation.refuelCar(cars, 10)
+    cars.forEach {
+        println(it)
     }
 }
