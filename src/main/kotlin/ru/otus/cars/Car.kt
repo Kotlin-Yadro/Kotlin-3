@@ -28,4 +28,9 @@ interface Car : CarInput {
      * Внутренний статический класс - номерой знак
      */
     data class Plates(val number: String, val region: Int)
+
+    /**
+     * Горловина
+     */
+    val mouth: TankMouth
 }
