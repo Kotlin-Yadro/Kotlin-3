@@ -36,4 +36,10 @@ object Taz: Car {
     override fun wheelToLeft(degrees: Int) {
         throw NotImplementedError("Руля нет")
     }
+
+    override var mouth: TankMouth = TankMouth.TazMouth()
+
+    override fun toString(): String {
+        return "Taz(руля нет, приборов нет, номера сняты, fuel=${mouth.getContent()})"
+    }
 }
