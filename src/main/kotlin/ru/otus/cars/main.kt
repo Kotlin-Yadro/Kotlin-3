@@ -16,6 +16,34 @@ fun main() {
     techChecks()
     println("\n===> Taz...")
     println(Taz.color)
+
+    println("\n===> fuel cars on right station")
+    fuelCarsOnRealGasStation()
+    println("\n===> fuel cars on bad station")
+    fuelCarsOnBadGasStation()
+}
+
+fun fuelCarsOnRealGasStation() {
+    val someVazCars: List<Car> = listOf(
+        Togliatti.buildCar(Vaz2107, Car.Plates("456", 52)),
+        Togliatti.buildCar(Vaz2108, Car.Plates("123", 152)),
+        Togliatti.buildCar(Vaz2107, Car.Plates("789", 252))
+    )
+
+    println("Заправляемся на хорошей заправке")
+    val gasStation: GasStation = RealGasStation()
+    gasStation.fuelMultipleCars(someVazCars, 40)
+}
+
+fun fuelCarsOnBadGasStation() {
+    val someVazCars: List<Car> = listOf(
+        Togliatti.buildCar(Vaz2107, Car.Plates("456", 52)),
+        Togliatti.buildCar(Vaz2108, Car.Plates("123", 152))
+    )
+
+    println("Заправляемся на плохой заправке")
+    val gasStation: GasStation = BrokenGasStation()
+    gasStation.fuelMultipleCars(someVazCars, 40)
 }
 
 fun driveCars() {
