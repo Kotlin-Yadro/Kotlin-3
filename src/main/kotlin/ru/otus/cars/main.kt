@@ -1,5 +1,10 @@
 package ru.otus.cars
 
+import ru.otus.cars.fuelsystem.ExplosiveException
+import ru.otus.cars.fuelsystem.Fuel
+import ru.otus.cars.fuelsystem.Tank
+import kotlin.collections.List
+
 fun main() {
     println("\n===> drive cars...")
     driveCars()
@@ -48,8 +53,31 @@ fun garageMake() {
         }
     }
 
-    val vaz = garage.buildCar(Vaz2107, Car.Plates("500", 50))
-    println(vaz.toString())
+    val carCollection = mutableListOf(
+        garage.buildCar(Vaz2107, Car.Plates("500", 50)),
+        garage.buildCar(Vaz2108, Car.Plates("507", 53)),
+        Taz)
+
+    carCollection.forEach { car ->
+        run {
+            println("========> $car")
+            var output: Tank? = null
+            try {
+                output = car.carOutput as Tank
+            } catch (error: Error) {
+                println("Can not get equipment due to ${error.message}")
+                return@run
+            }
+
+            Fuel.entries.forEach { fuelType ->
+                try {
+                    output.addFuel(fuelType, 30)
+                } catch (exception: ExplosiveException) {
+                    println(exception.message)
+                }
+            }
+        }
+    }
 }
 
 fun getEquipment() {
