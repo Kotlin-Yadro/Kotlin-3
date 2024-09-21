@@ -36,4 +36,8 @@ object Taz: Car {
     override fun wheelToLeft(degrees: Int) {
         throw NotImplementedError("Руля нет")
     }
+    override fun receiveFuel(liters : Int) {
+        throw NotImplementedError("бдыщ")
+    }
+    override val tank = Tank(50, Tank.FuelType.FTPETROL)
 }

@@ -7,5 +7,5 @@ sealed interface CarBuilder {
     /**
      * Собери машину
      */
-    fun build(plates: Car.Plates): Car
+    fun build(plates: Car.Plates, type: Tank.FuelType): Car
 }
