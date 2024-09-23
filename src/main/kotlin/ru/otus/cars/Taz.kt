@@ -12,6 +12,8 @@ object Taz: Car {
      */
     override val color: String = "Ржавый"
 
+    override var tankMouth: TankMouth = TankMouth.TazMouth
+
     /**
      * Следит за машиной
      */
@@ -35,5 +37,9 @@ object Taz: Car {
      */
     override fun wheelToLeft(degrees: Int) {
         throw NotImplementedError("Руля нет")
+    }
+
+    override fun toString(): String {
+        return "Taz(руля нет, приборов нет, номера сняты,, fuel=${tankMouth.getContents()})"
     }
 }
